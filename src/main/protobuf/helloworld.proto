@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option java_package = "edu.caltech.cast.indy.grpc";
+option java_outer_classname = "HelloWorldProto";
+
+// The greeting service definition.
+service GreeterService {
+  // Sends a greeting as request/reply single pattern
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+
+  // Open a stream, continuously send HelloRequests over the open stream,
+  // upon close of stream, get a single HelloReply back signaling end of
+  // processing.
+  // This has limitation as the underlying buffer ingesting values from
+  // the stream is capped at Int.MaxValue
+  rpc KeepSayingHello (stream HelloRequest) returns (HelloReply) {}
+
+  // Similar to KeepSayingHello above... but the underlying implementation
+  // shares incoming HelloRequest data to subscribers of KeepGettingHello
+  // Open a stream, continuously send HelloRequests over the open stream,
+  // on close of stream, get a single HelloReply back signaling end.
+  // Producers will utilize this to send data to subscribers
+  rpc SayHelloToAll (stream HelloRequest) returns (HelloReply) {}
+
+  // The subscriber equivalent of SayHelloToAll.
+  // Making a request with HelloRequest will open a stream channel,
+  // HelloRequest messages from SayHelloToAll will be forwarded
+  // as HelloReply into this stream. The stream can be closed at
+  // any time, not effecting any producer sending messages via SayHelloToAll
+  rpc KeepGettingHello (HelloRequest) returns (stream HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
