@@ -19,17 +19,17 @@ service GreeterService {
   rpc KeepSayingHello (stream HelloRequest) returns (HelloReply) {}
 
   // Similar to KeepSayingHello above... but the underlying implementation
-  // shares incoming HelloRequest data to subscribers of KeepGettingHello
+  // shares incoming HelloRequest data to subscribers of SubscribeHellos
   // Open a stream, continuously send HelloRequests over the open stream,
   // on close of stream, get a single HelloReply back signaling end.
   // Producers will utilize this to send data to subscribers
   rpc PublishHellos (stream HelloRequest) returns (HelloReply) {}
 
-  // The subscriber equivalent of SayHelloToAll.
+  // The subscriber equivalent of PublishHellos.
   // Making a request with HelloRequest will open a stream channel,
   // HelloRequest messages from SayHelloToAll will be forwarded
   // as HelloReply into this stream. The stream can be closed at
-  // any time, not effecting any producer sending messages via SayHelloToAll
+  // any time, not effecting any producer sending messages via PublishHellos
   rpc SubscribeHellos (HelloRequest) returns (stream HelloReply) {}
 }
 

@@ -14,8 +14,15 @@ enablePlugins(AkkaGrpcPlugin)
 // sbt tasks, consider https://github.com/spray/sbt-revolver/
 fork := true
 
+assembly / assemblyMergeStrategy := {
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case x => MergeStrategy.first
+}
+
 lazy val root = (project in file("."))
   .settings(
+    assembly / mainClass := Some("edu.caltech.cast.indy.GreeterServer"),
+    assembly / assemblyJarName := "edu-caltech-cast-indy-GreeterServer.jar",
     name := "groundstation-commandserver",
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
@@ -23,10 +30,6 @@ lazy val root = (project in file("."))
       "com.typesafe.akka" %% "akka-discovery" % akkaVersion,
       "com.typesafe.akka" %% "akka-pki" % akkaVersion,
 
-      "ch.qos.logback" % "logback-classic" % "1.5.6",
-
-      "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test,
-      "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test,
-      "org.scalatest" %% "scalatest" % "3.2.18" % Test
+      "ch.qos.logback" % "logback-classic" % "1.5.6"
     )
   )
