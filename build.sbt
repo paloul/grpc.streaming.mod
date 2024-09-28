@@ -6,7 +6,9 @@ val akkaVersion = "2.9.5"
 lazy val akkaGrpcVersion = sys.props.getOrElse("akka-grpc.version", "2.4.3")
 
 resolvers += "Akka library repository".at("https://repo.akka.io/maven")
+
 enablePlugins(AkkaGrpcPlugin)
+enablePlugins(JavaAppPackaging)
 
 // Run in a separate JVM, to make sure sbt waits until all threads have
 // finished before returning.
@@ -14,15 +16,8 @@ enablePlugins(AkkaGrpcPlugin)
 // sbt tasks, consider https://github.com/spray/sbt-revolver/
 fork := true
 
-assembly / assemblyMergeStrategy := {
-  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-  case x => MergeStrategy.first
-}
-
 lazy val root = (project in file("."))
   .settings(
-    assembly / mainClass := Some("edu.caltech.cast.indy.GreeterServer"),
-    assembly / assemblyJarName := "edu-caltech-cast-indy-GreeterServer.jar",
     name := "groundstation-commandserver",
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
