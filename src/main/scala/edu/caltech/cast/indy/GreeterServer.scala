@@ -31,11 +31,12 @@ import edu.caltech.cast.indy.grpc._
 
 object GreeterServer {
   def main(args: Array[String]): Unit = {
+    
     // Important: enable HTTP/2 in ActorSystem's config
     // We do it here programmatically, but you can also set it in the application.conf
     val conf = ConfigFactory
       .parseString("akka.http.server.enable-http2 = on")
-      .withFallback(ConfigFactory.defaultApplication())
+      .withFallback(ConfigFactory.load("application.conf"))
 
     val serverInterface = conf.getString("akka.grpc.server.interface")
     val serverPort = conf.getInt("akka.grpc.server.port")
