@@ -37,14 +37,19 @@ object GreeterServer {
       .parseString("akka.http.server.enable-http2 = on")
       .withFallback(ConfigFactory.defaultApplication())
 
+    val serverInterface = conf.getString("akka.grpc.server.interface")
+    val serverPort = conf.getInt("akka.grpc.server.port")
+
     val system = ActorSystem[Nothing](Behaviors.empty[Nothing], "IndyCar-HelloWorld-Server", conf)
 
-    new GreeterServer(system).run()
+    new GreeterServer(system, serverInterface, serverPort).run()
     // ActorSystem threads will keep the app alive until `system.terminate()` is called
   }
 }
 
-class GreeterServer(system: ActorSystem[_]) {
+class GreeterServer(system: ActorSystem[_],
+                    serverInterface: String= "127.0.0.1",
+                    serverPort: Int = 8080) {
   def run(): Future[Http.ServerBinding] = {
     // Akka boot up code
     implicit val sys = system
@@ -55,7 +60,7 @@ class GreeterServer(system: ActorSystem[_]) {
       GreeterServiceHandler(new GreeterServiceImpl(system))
 
     val bound: Future[Http.ServerBinding] = Http()(system)
-      .newServerAt(interface = "127.0.0.1", port = 8080)
+      .newServerAt(interface = serverInterface, port = serverPort)
       .enableHttps(serverHttpContext)
       .bind(service)
       .map(_.addToCoordinatedShutdown(hardTerminationDeadline = 10.seconds))
