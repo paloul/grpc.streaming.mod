@@ -31,7 +31,7 @@ import edu.caltech.cast.indy.grpc._
 
 object GreeterServer {
   def main(args: Array[String]): Unit = {
-    
+
     // Important: enable HTTP/2 in ActorSystem's config
     // We do it here programmatically, but you can also set it in the application.conf
     val conf = ConfigFactory

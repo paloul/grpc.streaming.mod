@@ -57,7 +57,7 @@ object GreeterClient {
           .map(i => HelloRequest(s"$name-$i"))
           .mapMaterializedValue(_ => NotUsed)
 
-      client.sayHelloToAll(requestStream)
+      client.publishHellos(requestStream)
       //val responseStream: Source[HelloReply, NotUsed] = client.sayHelloToAll(requestStream)
       //val done: Future[Done] = responseStream.runForeach(reply => println(s"$name got streaming reply: ${reply.message}"))
 

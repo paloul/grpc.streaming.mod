@@ -31,13 +31,13 @@ class GreeterServiceImpl(system: ActorSystem[_]) extends GreeterService {
     in.runWith(Sink.seq).map(elements => HelloReply(s"Hello, ${elements.map(_.name).mkString(", ")}"))
   }
 
-  override def sayHelloToAll(in: Source[HelloRequest, NotUsed]): Future[HelloReply] = {
+  override def publishHellos(in: Source[HelloRequest, NotUsed]): Future[HelloReply] = {
     in.runForeach(req => inbound.offer(HelloReply(s"Hello, ${req.name}")))
       .map(_ => HelloReply("Greeting Complete"))
     // Map executes and replies Future[HelloReply] on termination of [in] source stream
   }
 
-  override def keepGettingHello(in: HelloRequest): Source[HelloReply, NotUsed] = {
+  override def subscribeHellos(in: HelloRequest): Source[HelloReply, NotUsed] = {
     outbound
   }
 }

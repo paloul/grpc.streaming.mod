@@ -23,14 +23,14 @@ service GreeterService {
   // Open a stream, continuously send HelloRequests over the open stream,
   // on close of stream, get a single HelloReply back signaling end.
   // Producers will utilize this to send data to subscribers
-  rpc SayHelloToAll (stream HelloRequest) returns (HelloReply) {}
+  rpc PublishHellos (stream HelloRequest) returns (HelloReply) {}
 
   // The subscriber equivalent of SayHelloToAll.
   // Making a request with HelloRequest will open a stream channel,
   // HelloRequest messages from SayHelloToAll will be forwarded
   // as HelloReply into this stream. The stream can be closed at
   // any time, not effecting any producer sending messages via SayHelloToAll
-  rpc KeepGettingHello (HelloRequest) returns (stream HelloReply) {}
+  rpc SubscribeHellos (HelloRequest) returns (stream HelloReply) {}
 }
 
 // The request message containing the user's name.
