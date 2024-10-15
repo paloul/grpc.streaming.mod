@@ -29,9 +29,13 @@ some basic abstractions for packaging SBT based projects and running them outsid
 # appropriate start scripts and fat/uber JARs
 sbt universal:packageBin
 
+# The packageBin command above generates a ZIP containing all necessary
+# files and scripts to run the application. 
 # Unzip the zip file under `target/universal`
+unzip ./target/universal/groundstation-commandserver-0.1.0-SNAPSHOT.zip
+
 # Use the appropriate start script for your environment in the bin folder
-./target/universal/unzip-folder-name/bin/greeter-server
+./target/universal/groundstation-commandserver-0.1.0-SNAPSHOT/bin/greeter-server
 ```
 
 ### Key Part
