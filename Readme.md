@@ -34,6 +34,14 @@ sbt universal:packageBin
 # Unzip the zip file under `target/universal`
 unzip ./target/universal/groundstation-commandserver-0.1.0-SNAPSHOT.zip
 
+# The contents of the unzipped folder 
+# grpc.streaming.mod/target/universal/groundstation-commandserver-0.1.0-SNAPSHOT
+$ groundstation-commandserver-0.1.0-SNAPSHOT git:(main) ls -l
+total 0
+drwxr-xr-x   8 paloul  staff   256 Oct 15 13:56 bin
+drwxr-xr-x  46 paloul  staff  1472 Oct 15 13:56 lib
+
+
 # Use the appropriate start script for your environment in the bin folder
 ./target/universal/groundstation-commandserver-0.1.0-SNAPSHOT/bin/greeter-server
 ```
